@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Sitemap;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->get('/sitemap', function (Request $request) {
+
+    if(request()->filled('slug')){
+        $slug = request()->query('slug');
+        $slugs = Sitemap::query()->where('producturl', 'LIKE', '%'.$slug.'%')->get();
+        return $slugs;
+    }
+    return ["not"];
 });
